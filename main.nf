@@ -1,5 +1,29 @@
 // Modules
 include { fastp } from './modules/fastp.nf'
+include { star_index; star_align } from './modules/star.nf'
+include { samtools_sort } from './modules/samtools.nf'
+include { rmats_run; rmats_parse_coords } from './modules/rmats.nf'
+include { whippet_index; whippet_quant; whippet_delta } from './modules/whippet.nf'
+
+// Functions
+def combinations(channel) {
+	channel
+		.groupTuple(by: 0)
+		.toList()
+		.map {
+			[it, it]
+			.combinations()
+			.findAll{ a, b -> a[0] < b[0] }
+		}
+		.flatMap()
+		.map {
+			it -> [
+				[ a: it[0][0], b: it[1][0] ],
+				it[0][1],
+				it[1][1]
+			]
+		}
+}
 
 // Channels
 Channel.fromPath( params.samplesheet )
@@ -19,11 +43,22 @@ samplesheet_ch.splitCsv( header: true )
 // Workflow
 workflow {
   fastp( read_ch )
-  // star_index()
-  // star_align()
-  // samtools_sort()
-  // rmats_run()
-  // whippet_index()
-  // whippet_quent()
-  // whippet_delta()
+  star_index( genome_ch, annotation_ch )
+  star_align( star_index.out.index.collect(), fastp.out.reads )
+  samtools_sort( star_align.out.bam )
+  samtools_sort.out.bam
+    .map { it -> [ it[2], it[1][0], it[0] ] }
+    .set { rmats_ch }
+
+  // rMATS
+  rmats_run( combinations( rmats_ch ), annotation_ch.collect() )
+  rmats_parse_coords( rmats_run.out.data )
+
+  // Whippet
+  whippet_index( genome_ch, annotation_ch )
+  whippet_quant( whippet_index.out.index.collect(), fastp.out.reads )
+  whippet_quant.out.psi
+    .map { it -> [ it[2], it[1], it[0] ] }
+    .set { whippet_ch }
+  whippet_delta( combinations( whippet_ch ) )
 }

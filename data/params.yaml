@@ -3,3 +3,4 @@ samplesheet: data/samplesheet.csv
 genome: data/genome/genome.fa
 annotation: data/genome/annotation.gtf
 outputdir: output
+read_length: 100
