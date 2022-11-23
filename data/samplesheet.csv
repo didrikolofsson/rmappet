@@ -1,0 +1,7 @@
+sample_id,read1,read2,condition
+SRR17610122,data/fastq/SRR17610122_1.fastq.gz,data/fastq/SRR17610122_2.fastq.gz,condition_a
+SRR17610123,data/fastq/SRR17610123_1.fastq.gz,data/fastq/SRR17610123_2.fastq.gz,condition_a
+SRR17610124,data/fastq/SRR17610124_1.fastq.gz,data/fastq/SRR17610124_2.fastq.gz,condition_a
+SRR17610129,data/fastq/SRR17610129_1.fastq.gz,data/fastq/SRR17610129_2.fastq.gz,condition_b
+SRR17610130,data/fastq/SRR17610130_1.fastq.gz,data/fastq/SRR17610130_2.fastq.gz,condition_b
+SRR17610131,data/fastq/SRR17610131_1.fastq.gz,data/fastq/SRR17610131_2.fastq.gz,condition_b
