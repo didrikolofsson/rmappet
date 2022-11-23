@@ -1,2 +1,5 @@
 # rmappet
-Nextflow pipeline for performing parallel alternative splicing analysis using rMATS and Whippet and then overlapping the results for added confidence
+
+## Description
+
+**rmappet** is a nextflow pipeline for performing parallel alternative splicing analysis using rMATS and Whippet followed by overlapping of the significant alternative splicing events reported by each tool.
