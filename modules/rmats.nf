@@ -21,7 +21,7 @@ process rmats_run {
         --b1 ${conditions.a}.txt \\
         --b2 ${conditions.b}.txt \\
         --novelSS \\
-        -t paired \\
+        -t $params.libtype \\
         --readLength $params.read_length \\
         --variable-read-length \\
         --gtf $annotation  \\
@@ -44,7 +44,7 @@ process rmats_run {
 			--b1 ${conditions.a}.txt \\
 			--b2 ${conditions.b}.txt \\
 			--novelSS \\
-			-t paired \\
+			-t $params.libtype \\
 			--readLength $params.read_length \\
 			--variable-read-length \\
 			--gtf $annotation  \\
@@ -58,7 +58,6 @@ process rmats_run {
 process rmats_parse_coords {
     container { params.containers.python }
     publishDir { "${params.outputdir}/rmats/results" }, mode: 'copy'
-    label 'sm'
 
     input:
     tuple val(conditions), path(data)

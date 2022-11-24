@@ -1,0 +1,7 @@
+sample_id,read1,read2,condition
+SRR408751,data/fastq/SRR408751.fastq.gz,,condition_a
+SRR408752,data/fastq/SRR408752.fastq.gz,,condition_a
+SRR408753,data/fastq/SRR408753.fastq.gz,,condition_a
+SRR408754,data/fastq/SRR408754.fastq.gz,,condition_b
+SRR408755,data/fastq/SRR408755.fastq.gz,,condition_b
+SRR408756,data/fastq/SRR408756.fastq.gz,,condition_b

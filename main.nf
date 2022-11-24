@@ -33,12 +33,21 @@ Channel.fromPath( params.genome )
 Channel.fromPath( params.annotation )
 	.set{ annotation_ch }
 
-samplesheet_ch.splitCsv( header: true )
-	.take( params.dev ? 1: -1 )
-	.map{ row -> [
-			row.sample_id, file( row.read1 ), file( row.read2 ), row.condition
-	]}
-	.set { read_ch }
+if ( params.libtype == "single" ) {	
+	samplesheet_ch.splitCsv( header: true )
+		.take( params.dev ? 1: -1 )
+		.map{ row -> [
+				row.sample_id, file( row.read1 ), row.condition
+		]}
+		.set { read_ch }
+} else if ( params.libtype == "paired" ) {
+	samplesheet_ch.splitCsv( header: true )
+		.take( params.dev ? 1: -1 )
+		.map{ row -> [
+				row.sample_id, [ file( row.read1 ), file( row.read2 ) ], row.condition
+		]}
+		.set { read_ch }
+}
 
 // Workflow
 workflow {
