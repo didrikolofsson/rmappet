@@ -102,8 +102,10 @@ for fp in rmats_output_filtered:
             {
                 "gene_id": row.GeneID,
                 "gene_symbol": row.geneSymbol,
+                "type": event_type,
                 "coord": coord,
                 "flank": flank,
+                "strand": row.strand,
                 "inc_form_len": row.IncFormLen,
                 "skip_form_len": row.SkipFormLen,
                 "p_value": row.PValue,
