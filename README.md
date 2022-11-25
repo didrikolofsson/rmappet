@@ -23,12 +23,8 @@
 
 1. Install [Nextflow](https://www.nextflow.io/) (>=22.10.3)
 2. Install [Docker](https://www.docker.com/) and/or [Singularity](https://sylabs.io/)
-3. Download the rmappet pipeline with the following command:
+3. Download and test rmappet with the following command:
 
    ```
-    nextflow pull DidrikOlofsson/rmappet
+    nextflow run DidrikOlofsson/rmappet -profile test,docker -stub
    ```
-
-## Citations
-
-## Contact
