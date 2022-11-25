@@ -4,6 +4,7 @@ include { star_index; star_align } from './modules/star.nf'
 include { samtools_sort } from './modules/samtools.nf'
 include { rmats_run; rmats_parse_coords } from './modules/rmats.nf'
 include { whippet_index; whippet_quant; whippet_delta } from './modules/whippet.nf'
+include { overlap } from './modules/rmappet.nf'
 
 // Functions
 def combinations(channel) {
@@ -70,4 +71,12 @@ workflow {
     .map { it -> [ it[2], it[1], it[0] ] }
     .set { whippet_ch }
   whippet_delta( combinations( whippet_ch ) )
+
+	// Overlap
+	rmats_parse_coords.out.data
+		.map { it -> [ it[0], it[1] ] }
+		.join( whippet_delta.out.delta, by: 0 )
+		.set { overlap_ch }
+	
+	overlap( overlap_ch )
 }
