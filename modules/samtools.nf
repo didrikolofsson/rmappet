@@ -32,5 +32,5 @@ process samtools_sort {
     $bam \\
     > ${sampleID}.sortedByCoord.bam
   echo samtools index ${sampleID}.sortedByCoord.bam > ${sampleID}.sortedByCoord.bam.bai
-    """
+  """
 }

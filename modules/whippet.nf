@@ -75,32 +75,30 @@ process whippet_delta {
   tuple val(conditions), path(condition_a_quants), path(condition_b_quants)
 
   output:
-  path '*.diff.gz', emit: data
+  tuple val(comparison), path('*.diff.gz'), emit: delta
 
   script:
-  condition_a = conditions.condition_a
-  condition_b = conditions.condition_b
+  comparison = "${conditions.a}_vs_${conditions.b}"
   quants_a_joined = condition_a_quants.join(',')
   quants_b_joined = condition_b_quants.join(',')
   """
   julia /code/whippet/bin/whippet-delta.jl \\
     -a $quants_a_joined \\
     -b $quants_b_joined \\
-    -o ${condition_a}_vs_${condition_b} \\
+    -o $comparison \\
     -s 2
   """
 
   stub:
-  condition_a = conditions.condition_a
-  condition_b = conditions.condition_b
+  comparison = "${conditions.a}_vs_${conditions.b}"
   quants_a_joined = condition_a_quants.join(',')
   quants_b_joined = condition_b_quants.join(',')
   """
   echo julia /code/whippet/bin/whippet-delta.jl \\
     -a $quants_a_joined \\
     -b $quants_b_joined \\
-    -o ${condition_a}_vs_${condition_b} \\
+    -o $comparison \\
     -s 2 \\
-    > ${condition_a}_vs_${condition_b}.diff.gz
+    > ${comparison}.diff.gz
   """
 }
