@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**rmappet** is a nextflow pipeline for parallel alternative splicing analysis on bulk, short-read RNA sequencing data using both [rMATS](https://rnaseq-mats.sourceforge.net/) and [Whippet](https://github.com/timbitz/Whippet.jl). Coordinates of the splicing events reported by each tool are then overlapped to identify shared events, providing additional confidence when interpreting the results. Both single- and paired-end data is supported.
+**rmappet** is a [nextflow](https://www.nextflow.io/) pipeline for parallel alternative splicing analysis on bulk, short-read RNA sequencing data using both [rMATS](https://rnaseq-mats.sourceforge.net/) and [Whippet](https://github.com/timbitz/Whippet.jl). Coordinates of the splicing events reported by each tool are then overlapped to identify shared events, providing additional confidence when interpreting the results. Both single- and paired-end data is supported.
 
 ## Pipeline summary
 
