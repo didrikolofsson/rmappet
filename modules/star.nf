@@ -1,5 +1,6 @@
 process star_index {
   container { params.containers.star }
+  label 'lg'
   
   input:
   path genome
@@ -36,6 +37,7 @@ process star_align {
   publishDir path: { "${params.outputdir}/star/alignments/" },
     mode: 'copy',
     saveAs: { filename -> filename.endsWith(".bam") ? null: filename }
+  label 'lg'
 
   input:
   path index

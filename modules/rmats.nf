@@ -1,6 +1,7 @@
 process rmats_run {
     container { params.containers.rmats }
     publishDir { "$params.outputdir/rmats/run/" }, mode: 'copy'
+    label 'md'
     
     input:
     tuple val(conditions), path(condition_a_bams), path(condition_b_bams)
@@ -60,6 +61,7 @@ process rmats_run {
 process rmats_parse_coords {
     container { params.containers.python }
     publishDir { "${params.outputdir}/rmats/results" }, mode: 'copy'
+    label 'sm'
 
     input:
     tuple val(comparison), path(data)

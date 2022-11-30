@@ -2,6 +2,7 @@ process samtools_sort {
   container { params.containers.samtools }
   publishDir { "$params.outputdir/samtools/sort/" },
       mode: 'copy'
+  label 'md'
 
   input:
   tuple val(sampleID), path(bam), val(condition)

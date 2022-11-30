@@ -1,5 +1,6 @@
 process whippet_index {
   container { params.containers.whippet }
+  label 'lg'
 
   input:
   path genome
@@ -33,6 +34,7 @@ process whippet_index {
 process whippet_quant {
   publishDir { "${params.outputdir}/whippet/quant" }, mode: 'copy'
   container { params.containers.whippet }
+  label 'md'
 
   input:
   path index
@@ -70,6 +72,7 @@ process whippet_quant {
 process whippet_delta {
   publishDir { "${params.outputdir}/whippet/delta" }, mode: 'copy'
   container { params.containers.whippet }
+  label 'md'
 
   input:
   tuple val(conditions), path(condition_a_quants), path(condition_b_quants)

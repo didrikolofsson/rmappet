@@ -2,6 +2,7 @@ process overlap {
   container { params.containers.python }
   publishDir { "$params.outputdir/overlap/" },
       mode: 'copy'
+  label 'sm'
 
   input:
   tuple val(comparison), path(rmatsdiff), path(whippetdelta)

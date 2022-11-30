@@ -3,6 +3,7 @@ process fastp {
   publishDir path: { "$params.outputdir/fastp/" },
     mode: 'copy',
     saveAs: { filename -> filename.endsWith(".trim.fq.gz") ? null: filename }
+  label 'sm'
 
   input:
   tuple val(sampleID), path(reads), val(condition)
