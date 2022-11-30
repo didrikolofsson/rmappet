@@ -24,7 +24,7 @@ process rmats_run {
         --b2 ${conditions.b}.txt \\
         --novelSS \\
         -t $params.libtype \\
-        --readLength $params.read_length \\
+        --readLength $params.readlen \\
         --variable-read-length \\
         --gtf $annotation  \\
         --nthread $task.cpus \\
@@ -48,7 +48,7 @@ process rmats_run {
 			--b2 ${conditions.b}.txt \\
 			--novelSS \\
 			-t $params.libtype \\
-			--readLength $params.read_length \\
+			--readLength $params.readlen \\
 			--variable-read-length \\
 			--gtf $annotation  \\
 			--nthread $task.cpus \\
