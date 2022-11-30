@@ -22,21 +22,17 @@
 ## Get started
 
 1. Install [Nextflow](https://www.nextflow.io/) (>=22.10.3)
-2. Install [Docker](https://www.docker.com/) and/or [Singularity](https://sylabs.io/)
-3. Download and test rmappet:
+2. Install [Docker](https://www.docker.com/) for local execution
+3. Install [Singularity](https://sylabs.io/) for cluster execution
+4. Download and test rmappet in stub mode:
 
    ```
-   nextflow run DidrikOlofsson/rmappet -profile test -stub
+   nextflow run DidrikOlofsson/rmappet -profile test,docker -stub
    ```
 
 ## Pipeline execution
 
-The pipeline can currently be executed in the following computing environments:
-
-1. Local computers with docker
-2. Distributed computing clusters with SLURM and Singularity
-
-This section contains information about required pipeline inputs and instructions on how to execute the pipeline in the supported environments.
+The pipeline can currently be executed locally using docker or on distributed computing clusters using [SLURM](https://slurm.schedmd.com/) and singularity. Software dependencies are resolved using pre-built docker and singularity images, removing the need for users to manage their own dependenices. This section provides information about the required pipeline inputs and how to execute the pipeline in the supported environments.
 
 ### Required inputs
 
@@ -67,8 +63,24 @@ A sample sheet with information about the experimental design should be included
 | sample5   | path/to/sample5_1.fastq.gz | path/to/sample5_2.fastq.gz | condition_b |
 | sample6   | path/to/sample6_1.fastq.gz | path/to/sample6_2.fastq.gz | condition_b |
 
-Example sample sheets can be found in the `/data` folder.
+Examples of sample sheets can be found in the `/data` folder.
 
 ### Local execution
 
+Execute the pipeline on a local computer using docker by running the following command. Make sure that the docker daemon is running before launch to avoid errors.
+
+```
+nextflow run DidrikOlofsson/rmappet -profile docker -params-file path/to/params.yaml
+```
+
 ### Cluster execution
+
+Execute the pipeline on a distributed computing cluster by running the following command. Make sure that the singularity command is accessible on the head node before launch to avoid errors, e.g call `module load singularity` on clusters with a module system.
+
+```
+nextflow run DidrikOlofsson/rmappet -profile slurm,singularity -params-file path/to/params.yaml
+```
+
+## Pipeline outputs
+
+Coming soon
