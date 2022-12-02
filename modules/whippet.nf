@@ -10,9 +10,15 @@ process whippet_index {
   path 'index', emit: index
 
   script:
+  if ( workflow.profile.contains('singularity') ) {
+    extra = "julia --project=/code/whippet/ -e 'using Pkg; Pkg.instantiate()'"
+  } else {
+    extra = ""
+  }
   """
+  $extra
   mkdir index
-  julia /code/whippet/bin/whippet-index.jl \
+  whippet-index.jl \
     --fasta $genome \
     --gtf $annotation \
     -x index/graph \
@@ -22,7 +28,7 @@ process whippet_index {
   stub:
   """
   mkdir index
-  echo julia /code/whippet/bin/whippet-index.jl \\
+  echo whippet-index.jl \\
     --fasta $genome \\
     --gtf $annotation \\
     -x index/graph \\
@@ -49,7 +55,7 @@ process whippet_quant {
 
   script:
   """
-  julia /code/whippet/bin/whippet-quant.jl \\
+  whippet-quant.jl \\
     $reads \\
     -o $sampleID \\
     -x index/graph.jls
@@ -57,7 +63,7 @@ process whippet_quant {
 
   stub:
   """
-  echo julia /code/whippet/bin/whippet-quant.jl \\
+  echo whippet-quant.jl \\
     $reads \\
     -o $sampleID \\
     -x index/graph.jls \\
@@ -85,7 +91,7 @@ process whippet_delta {
   quants_a_joined = condition_a_quants.join(',')
   quants_b_joined = condition_b_quants.join(',')
   """
-  julia /code/whippet/bin/whippet-delta.jl \\
+  whippet-delta.jl \\
     -a $quants_a_joined \\
     -b $quants_b_joined \\
     -o $comparison \\
@@ -97,7 +103,7 @@ process whippet_delta {
   quants_a_joined = condition_a_quants.join(',')
   quants_b_joined = condition_b_quants.join(',')
   """
-  echo julia /code/whippet/bin/whippet-delta.jl \\
+  echo whippet-delta.jl \\
     -a $quants_a_joined \\
     -b $quants_b_joined \\
     -o $comparison \\
