@@ -24,7 +24,7 @@ process rmats_run {
         --b2 ${conditions.b}.txt \\
         --novelSS \\
         -t $params.libtype \\
-        --readLength $params.read_length \\
+        --readLength $params.readlen \\
         --variable-read-length \\
         --gtf $annotation  \\
         --nthread $task.cpus \\
@@ -48,7 +48,7 @@ process rmats_run {
 			--b2 ${conditions.b}.txt \\
 			--novelSS \\
 			-t $params.libtype \\
-			--readLength $params.read_length \\
+			--readLength $params.readlen \\
 			--variable-read-length \\
 			--gtf $annotation  \\
 			--nthread $task.cpus \\
@@ -81,5 +81,38 @@ process rmats_parse_coords {
 			$comparison \\
 			> ${comparison}.jcec.tsv
 		touch ${comparison}.jc.tsv
+    """
+}
+
+process rmats_filter {
+    container { params.containers.python }
+    publishDir { "${params.outputdir}/rmats/results" }, mode: 'copy'
+    label 'sm'
+
+    input:
+    tuple val(comparison), path(jcec), path(jc)
+
+    output:
+    tuple val(comparison), path('*.significant.jcec.tsv'), path('*.significant.jc.tsv')
+
+    script:
+    """
+    rmats_filter.py \\
+      $comparison \\
+      $jcec \\
+      $jc \\
+      $params.rmats.mindiff \\
+      $params.rmats.maxfdr
+    """
+
+		stub:
+    """
+    echo rmats_filter.py \\
+      $comparison \\
+      $jcec \\
+      $jc \\
+      $params.rmats.mindiff \\
+      $params.rmats.maxfdr > ${comparison}.significant.jcec.tsv
+    touch ${comparison}.significant.jc.tsv
     """
 }

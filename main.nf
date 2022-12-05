@@ -1,10 +1,10 @@
 // Modules
-include { fastp } from './modules/fastp.nf'
-include { star_index; star_align } from './modules/star.nf'
-include { samtools_sort } from './modules/samtools.nf'
-include { rmats_run; rmats_parse_coords } from './modules/rmats.nf'
-include { whippet_index; whippet_quant; whippet_delta } from './modules/whippet.nf'
-include { overlap } from './modules/rmappet.nf'
+include { fastp }                                                          from './modules/fastp.nf'
+include { star_index; star_align }                                         from './modules/star.nf'
+include { samtools_sort }                                                  from './modules/samtools.nf'
+include { rmats_run; rmats_parse_coords; rmats_filter }                    from './modules/rmats.nf'
+include { whippet_index; whippet_quant; whippet_delta; whippet_filter }    from './modules/whippet.nf'
+include { overlap; overlap_filter }                                        from './modules/rmappet.nf'
 
 // Functions
 def combinations(channel) {
@@ -63,6 +63,7 @@ workflow {
   // rMATS
   rmats_run( combinations( rmats_ch ), annotation_ch.collect() )
   rmats_parse_coords( rmats_run.out.data )
+	rmats_filter( rmats_parse_coords.out.data )
 
   // Whippet
   whippet_index( genome_ch, annotation_ch )
@@ -71,6 +72,7 @@ workflow {
     .map { it -> [ it[2], it[1], it[0] ] }
     .set { whippet_ch }
   whippet_delta( combinations( whippet_ch ) )
+	whippet_filter( whippet_delta.out.delta )
 
 	// Overlap
 	rmats_parse_coords.out.data
@@ -79,4 +81,5 @@ workflow {
 		.set { overlap_ch }
 	
 	overlap( overlap_ch )
+	overlap_filter( overlap.out.data )
 }
