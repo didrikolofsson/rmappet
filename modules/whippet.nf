@@ -105,3 +105,31 @@ process whippet_delta {
     > ${comparison}.diff.gz
   """
 }
+
+process whippet_filter {
+    container { params.containers.python }
+    publishDir { "${params.outputdir}/whippet/delta" }, mode: 'copy'
+    label 'sm'
+
+    input:
+    tuple val(comparison), path(delta)
+
+    output:
+    tuple val(comparison), path('*.significant.tsv'), emit: data
+
+    script:
+    """
+    whippet_filter.py $comparison \\
+      $delta \\
+      $params.whippet.mindiff \\
+      $params.whippet.minprob
+    """
+
+		stub:
+    """
+    echo whippet_filter.py $comparison \\
+      $delta \\
+      $params.whippet.mindiff \\
+      $params.whippet.minprob > ${comparison}.significant.tsv
+    """
+}
