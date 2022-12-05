@@ -133,8 +133,8 @@ Please note that rmappet is currently under active development, and we are still
 
 ## Contact
 
-Didrik Olofsson ([didrik.olofsson@gmail.com](mailto:didrik.olofsson@gmail.com))
+Didrik Olofsson ([didrik.olofsson@omiqa.bio](mailto:didrik.olofsson@omiqa.bio))
 
-Dr. Alexander Neumann ([alex.neumann@fu-berlin.de](mailto:alex.neumann@fu-berlin.de))
+Dr. Alexander Neumann ([alexander.neumann@omiqa.bio](mailto:alexander.neumann@omiqa.bio))
 
 Prof. Dr. Florian Heyd ([florian.heyd@fu-berlin.de](mailto:florian.heyd@fu-berlin.de))
