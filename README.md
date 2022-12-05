@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**rmappet** is a [nextflow](https://www.nextflow.io/) pipeline for parallel alternative splicing analysis on bulk, short-read RNA sequencing data using both [rMATS](https://rnaseq-mats.sourceforge.net/) and [Whippet](https://github.com/timbitz/Whippet.jl). Coordinates of the splicing events reported by each tool are then overlapped to identify shared events, providing additional confidence when interpreting the results. Both single- and paired-end data is supported.
+**rmappet** is a [nextflow](https://www.nextflow.io/) pipeline for parallel alternative splicing analysis of bulk, short-read RNA sequencing data using both [rMATS](https://rnaseq-mats.sourceforge.net/) and [Whippet](https://github.com/timbitz/Whippet.jl). Splicing events reported by each tool are then overlapped by location to identify shared events, providing additional confidence when interpreting the results. Both single- and paired-end data is supported.
 
 ## Pipeline summary
 
@@ -27,7 +27,7 @@
 4. Download and test rmappet in stub mode:
 
    ```
-   nextflow run DidrikOlofsson/rmappet -profile test,docker -stub
+   nextflow run didrikolofsson/rmappet -profile test,docker -stub
    ```
 
 ## Pipeline execution
@@ -70,7 +70,7 @@ Examples of sample sheets can be found in the `/data` folder.
 Execute the pipeline on a local computer using docker by running the following command. Make sure that the docker daemon is running before launch to avoid errors.
 
 ```
-nextflow run DidrikOlofsson/rmappet -profile docker -params-file path/to/params.yaml
+nextflow run didrikolofsson/rmappet -profile docker -params-file path/to/params.yaml
 ```
 
 ### Cluster execution
@@ -78,9 +78,63 @@ nextflow run DidrikOlofsson/rmappet -profile docker -params-file path/to/params.
 Execute the pipeline on a distributed computing cluster by running the following command. Make sure that the singularity command is accessible on the head node before launch to avoid errors, e.g call `module load singularity` on clusters with a module system.
 
 ```
-nextflow run DidrikOlofsson/rmappet -profile slurm,singularity -params-file path/to/params.yaml
+nextflow run didrikolofsson/rmappet -profile slurm,singularity -params-file path/to/params.yaml
 ```
 
-## Pipeline outputs
+## Pipeline output
 
-Coming soon
+The rmappet pipeline generates a set of output folders and files containing results from the various processing steps. The pipelines output is structured as follows:
+
+```
+outputdir
+├── fastp
+│   ├── sample1.fastp.html
+│   └── sample1.fastp.json
+├── overlap
+│   ├── condition_a_vs_condition_b.rmats_only.csv
+│   ├── condition_a_vs_condition_b.rw_overlap.csv
+│   ├── condition_a_vs_condition_b.whippet_only.csv
+│   ├── condition_a_vs_condition_b.significant.rmats_only.csv
+│   ├── condition_a_vs_condition_b.significant.rw_overlap.csv
+│   └── condition_a_vs_condition_b.significant.whippet_only.csv
+├── rmats
+│   ├── results
+│   │   ├── condition_a_vs_condition_b.jc.tsv
+│   │   ├── condition_a_vs_condition_b.jcec.tsv
+│   │   ├── condition_a_vs_condition_b.significant.jc.tsv
+│   │   └── condition_a_vs_condition_b.significant.jcec.tsv
+│   └── run
+│       └── condition_a_vs_condition_b
+│           └── condition_a_vs_condition_b.txt
+├── samtools
+│   └── sort
+│       ├── sample1.sortedByCoord.bam
+│       └── sample1.sortedByCoord.bam.bai
+├── star
+│   └── alignments
+│       ├── sample1.Log.final.out
+│       ├── sample1.ReadsPerGene.out.tab
+│       └── sample1.SJ.out.tab
+└── whippet
+    ├── delta
+    │   ├── condition_a_vs_condition_b.diff.gz
+    │   └── condition_a_vs_condition_b.significant.tsv
+    └── quant
+        ├── sample1.gene.tpm.gz
+        ├── sample1.isoform.tpm.gz
+        ├── sample1.jnc.gz
+        ├── sample1.map.gz
+        └── sample1.psi.gz
+```
+
+## Troubleshooting
+
+Please note that rmappet is currently under active development, and we are still working to fix bugs and add features. If you have any questions, suggestions, or issues, please feel free to contact us or open an issue.
+
+## Contact
+
+Didrik Olofsson ([didrik.olofsson@gmail.com](mailto:didrik.olofsson@gmail.com))
+
+Dr. Alexander Neumann ([alex.neumann@fu-berlin.de](mailto:alex.neumann@fu-berlin.de))
+
+Prof. Dr. Florian Heyd ([florian.heyd@fu-berlin.de](mailto:florian.heyd@fu-berlin.de))
