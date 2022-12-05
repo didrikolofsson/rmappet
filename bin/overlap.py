@@ -55,10 +55,10 @@ args = sys.argv[1:]
 rmats_results = pd.read_table(args[0], index_col=False)
 whippet_results = pd.read_table(args[1], index_col=False)
 
-# Remove MXE from rMATS results
+# Remove MXE from rMATS results since Whippet doesn't produce that event type
 rmats_results_filter = rmats_results[rmats_results["type"] != "MXE"].copy()
 
-# Remove Whippet sepcific event types and translate types to standard vocabulary
+# Remove Whippet specific event types and translate types to rMATS vocabulary
 whippet_results_filter = whippet_results[
     (whippet_results["Type"] == "CE")
     | (whippet_results["Type"] == "AA")
@@ -85,16 +85,16 @@ for idx, row in whippet_results_filter.iterrows():
     strand, event_type = row.Strand, row.Type
     chr, start, end = split_coord(row.Coord)
     start_window, end_window = get_window(start, 1), get_window(end, 1)
-    ols = ranges[chr][strand].find((start, end))
-    for ol in ols:
-        if (start_window[0] <= ol[0] <= start_window[1]) and (
-            end_window[0] <= ol[1] <= end_window[1]
+    overlaps = ranges[chr][strand].find((start, end))
+    for overlap in overlaps:
+        if (start_window[0] <= overlap[0] <= start_window[1]) and (
+            end_window[0] <= overlap[1] <= end_window[1]
         ):
-            if event_type == ol[2]["type"]:
+            if event_type == overlap[2]["type"]:
                 results.append(
                     {
-                        "rmats_flank": ol[2]["flank"],
-                        "rmats_coord": f"{chr}:{ol[0]}-{ol[1]}",
+                        "rmats_flank": overlap[2]["flank"],
+                        "rmats_coord": f"{chr}:{overlap[0]}-{overlap[1]}",
                         "whippet_coord": f"{chr}:{start}-{end}",
                         "type": row.Type,
                         "strand": strand,
